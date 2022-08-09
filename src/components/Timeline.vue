@@ -7,7 +7,10 @@ import { ref, computed } from "vue";
 */
 
 import { TimelinePost, today, thisWeek, thisMonth } from "../posts";
+import { usePosts } from "../store/posts";
 import TimelineItem from "./TimelineItem.vue";
+
+const postsStore = usePosts();
 
 const periods = ["Today", "This Week", "This Month"] as const;
 
@@ -20,8 +23,14 @@ function selectPeriod(period: Period) {
 }
 
 const posts = computed<TimelinePost[]>(() => {
-  return [today, thisWeek, thisMonth]
-    .map((post) => {
+  return postsStore.ids
+    .map((id) => {
+      const post = postsStore.all.get(id)
+
+      if (!post) {
+        throw Error(`Post with id ${id} of was expected but not found.`);
+      }
+
       return {
         ...post,
         created: DateTime.fromISO(post.created),
@@ -42,6 +51,9 @@ const posts = computed<TimelinePost[]>(() => {
 </script>
 
 <template>
+  {{ postsStore.foo }}
+  <button @click="postsStore.updateFoo('bar')">Update</button>
+
   <nav class="is-primary panel">
     <span class="panel-tabs">
       <a
