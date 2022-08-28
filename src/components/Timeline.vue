@@ -3,7 +3,7 @@
   ref -> new data values, (useState)
   computed -> retrieve data that is somehow related to states (refs) (useEffect)
 */
-import { usePosts } from "../store/posts";
+import { usePosts } from "../stores/posts";
 import TimelineItem from "./TimelineItem.vue";
 import { periods } from "../constants";
 
@@ -32,7 +32,3 @@ await postsStore.fetchPosts();
     />
   </nav>
 </template>
-
-<style>
-@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
-</style>
